@@ -4,6 +4,8 @@ import './App.css';
 
 function App() {
   const [pokemonName, setPokemonName] = useState("");
+  const [pokemonInfo, setPokemonInfo] = useState<undefined | any>(undefined);
+
   const POKEMON_BASE_URL = "https://pokeapi.co/api/v2";
 
   return (
@@ -11,7 +13,7 @@ function App() {
       <h1> Pokemon Search </h1>
 
       <div>
-        <label>Pokemon Name</label><br />
+        <label>Pokemon Name</label>
         <br />
         <input 
           type="text" 
@@ -25,13 +27,19 @@ function App() {
 
       <p> You have entered {pokemonName} </p>
 
-      <div id="pokemon-result">This will show the result</div>
+      {pokemonInfo === undefined ? (
+        <p>Pokemon not found</p>
+      ) : (
+        <div id="pokemon-result">
+          <img src={pokemonInfo.sprites.other.dream_world.front_default} />
+        </div>
+      )}
     </div>
   );
 
   function search(){
     axios.get(POKEMON_BASE_URL + "/pokemon/" + pokemonName).then((res) => {
-      console.log(res.data);
+      setPokemonInfo(res.data);
     });
   }
 }
