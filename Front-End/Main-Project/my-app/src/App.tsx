@@ -26,8 +26,8 @@ function App() {
         <input type="text" id="player-tag" name="player-tag" onChange={e => setinputPlayerTag(e.target.value)}/><br/>
         <button onClick={search}> Search </button>
       </div>
-
-      <p> You have entered {inputPlayerTag} </p>
+      
+      <p> You have entered #{inputPlayerTag} </p>
 
       {PlayerTag === undefined ? (
         <p>Player not found</p>
@@ -37,11 +37,13 @@ function App() {
     </div>
   );
   function search() {
+    console.log(COC_BASE_API_URL + "/players/#" + inputPlayerTag);
     axios({
       method: 'get', 
       url: COC_BASE_API_URL + "/players/#" + inputPlayerTag,
       headers: {
-        "Authorization": 'Bearer ' + COC_API_TOKEN
+        "Authorization": 'Bearer ' + COC_API_TOKEN,
+        "Access-Control-Allow-Origin": "https://localhost:3000"
       }
     }).then((res) => {
       console.log(res.data);
@@ -51,7 +53,7 @@ function App() {
   }
   /*
   function search() {
-    axios.get(COC_BASE_API_URL + "/players/#" + inputPlayerTag, {
+    axios.get(COC_BASE_API_URL + "/players/%23" + inputPlayerTag, {
       headers: {
         "Accept": "application/json",
         "Authorization": "Bearer " + COC_API_TOKEN
