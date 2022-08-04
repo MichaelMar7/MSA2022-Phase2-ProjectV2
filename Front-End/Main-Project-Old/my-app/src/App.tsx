@@ -37,9 +37,12 @@ function App() {
     </div>
   );
   function search() {
+    fetch('https://animechan.vercel.app/api/random')
+        .then(response => response.json())
+        .then(quote => console.log(quote))
     console.log(COC_BASE_API_URL + "/players/#" + inputPlayerTag);
     axios({
-      method: 'get', 
+      method: 'fetch', 
       url: COC_BASE_API_URL + "/players/#" + inputPlayerTag,
       headers: {
         "Authorization": 'Bearer ' + COC_API_TOKEN,
