@@ -1,10 +1,14 @@
 import {useState} from 'react';
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
+import Button from '@mui/material/Button';
 import './App.css';
 
 function App() {
   const [input, setInput] = useState("");
+  const [inputInfo, setInputInfo] = useState<undefined | any>(undefined);
   let searchMode = "Random";
-  let quotes = undefined;
   return (
     <div>
       <h1> Anime Random Quotes Displayer </h1>
@@ -14,31 +18,47 @@ function App() {
       <p>
         In API applicaiton allows the user to generate a <u> random anime quote from the API</u>, generate a random quote from a specific <u> Anime Title</u>, or generate a random quote from a specific <u> Anime Character</u>.
       </p>
-      <div>
-        <button onClick={random}>
-        Random Anime Quote
-        </button>
-      </div>
-      <div>
-        <button onClick={animeTitle}>
-        Anime Title
-        </button>
-      </div>
-      <div>
-        <button onClick={characterName}>
-        Character Name
-        </button>
-      </div>
-      <div>
-        <label>Name</label><br/>
-        <input type="text" onChange={e => setInput(e.target.value)}/><br/>
-        <button onClick={search}>
-        Anime Title
-        </button>
+
+      <div style={{justifyContent: 'center'}}>
+        <Button id={"searchModeButton"} onClick={random}> Random Anime Quote </Button>
+        <Button id={"searchModeButton"} onClick={animeTitle}> Anime Title </Button>
+        <Button id={"searchModeButton"} onClick={characterName}>Character Name </Button>
       </div>
 
-      <p> You are currently searching for {searchMode} </p>
-      <p> You have entered {input} </p>
+      <div>
+        <TextField
+          id="search-bar"
+          className="text"
+          value={input}
+          onChange={(e: any) => {
+            setInput(e.target.value);
+          }}
+          label="Enter..."
+          variant="outlined"
+          placeholder="Search..."
+          size="small"
+        />
+        <Button
+            onClick={() => {
+              search();
+            }}
+          >
+            <SearchIcon style={{ fill: "blue" }} />
+            GO
+          </Button>
+      </div>
+
+      {inputInfo === undefined ? (
+        <p> Error </p>
+      ) : (
+        <div>
+          <p> 
+            {inputInfo.anime}  <br/>
+            {inputInfo.character} <br/>
+            "{inputInfo.quote}"
+          </p>
+        </div>
+      )}
     </div>
   );
 
@@ -47,27 +67,30 @@ function App() {
   }
 
   function animeTitle() {
-    searchMode = "animeTitle";
+    searchMode = "Anime Title";
   }
 
   function characterName() {
-    searchMode = "characterName";
+    searchMode = "Character Name";
   }
 
   function search(){
     if (searchMode === "Random") {
       fetch("https://animechan.vercel.app/api/random")
-        .then(response => response.json())
-        .then(quote => console.log(quote))
-        
-    } else if (searchMode === "animeTitle") {
+        .then(res => res.json())
+        .then(quote => setInputInfo(quote))
+      console.log("Random")
+
+    } else if (searchMode === "Anime Title") {
       fetch("https://animechan.vercel.app/api/quotes/anime?title=" + input)
-        .then(response => response.json())
-        .then(quotes => console.log(quotes[Math.floor(Math.random() * quotes.length)]))
-    } else if (searchMode === "characterName") {
+        .then(res => res.json())
+        .then(quotes => setInputInfo(quotes[Math.floor(Math.random() * quotes.length)]))
+      console.log("animeTitle")
+    } else if (searchMode === "Character Name") {
       fetch("https://animechan.vercel.app/api/quotes/character?name=" + input)
-        .then(response => response.json())
-        .then(quotes => console.log(quotes[Math.floor(Math.random() * quotes.length)]))
+        .then(res => res.json())
+        .then(quotes => setInputInfo(quotes[Math.floor(Math.random() * quotes.length)]))
+      console.log("characterName")
     }
 }
 }
