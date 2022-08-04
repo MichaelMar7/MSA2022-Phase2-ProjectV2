@@ -56,6 +56,11 @@ function App() {
             {inputInfo.anime}  <br/>
             {inputInfo.character} <br/>
             "{inputInfo.quote}"
+            {inputInfo.anime === "Re:Zero kara Hajimeru Isekai Seikatsu" ? (
+              <p> RE:ZERO! </p>
+            ) : (
+              <p></p>
+            )}
           </p>
         </div>
       )}
