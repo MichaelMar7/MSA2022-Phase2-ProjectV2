@@ -1,3 +1,7 @@
+body {
+  background-color: #EEEEEE;
+}
+
 h1 {
   text-align: center;
 }
@@ -10,7 +14,5 @@ h1 {
 
 #searchModeButton {
   display: inline;
-  margin: "0 auto";
-  padding: 20px;
-  outline-color: black;
+  padding: 15px;
 }
