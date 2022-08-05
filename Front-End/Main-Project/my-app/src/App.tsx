@@ -2,15 +2,15 @@ import {useState} from 'react';
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
-import Button from '@mui/material/Button';
 import './App.css';
+import { Box, Button, Grid, Paper, Skeleton } from "@mui/material";
 
 function App() {
   const [input, setInput] = useState("");
   const [inputInfo, setInputInfo] = useState<undefined | any>(undefined);
   let searchMode = "Random";
   return (
-    <div>
+    <div style={{margin: "10px"}}>
       <h1> Anime Random Quotes Displayer </h1>
       <p>
           This is an React Typescript API application that displays random quotes from anime provided by the third party API <strong style={{color:"green"}}> AnimeChan </strong> created by <strong> rocktimsaikia </strong>. The url for the api is <a href="https://animechan.vercel.app/"> https://animechan.vercel.app/ </a>. 
@@ -19,13 +19,22 @@ function App() {
         In API applicaiton allows the user to generate a <u> random anime quote from the API</u>, generate a random quote from a specific <u> Anime Title</u>, or generate a random quote from a specific <u> Anime Character</u>.
       </p>
 
-      <div style={{justifyContent: 'center'}}>
-        <Button id={"searchModeButton"} onClick={random}> Random Anime Quote </Button>
+      <Grid
+        container
+        direction="row"
+        spacing={5}
+        sx={{
+          margin: "10px",
+          justifyContent: "center",
+        }}
+      >
+        <Button id={"searchModeButton"} onClick={random} variant={searchMode === "Radom" ? "contained" : "text"}> Random Anime Quote </Button>
         <Button id={"searchModeButton"} onClick={animeTitle}> Anime Title </Button>
         <Button id={"searchModeButton"} onClick={characterName}>Character Name </Button>
-      </div>
+      </Grid>
+      <p style={{textAlign: "center", marginTop: "5px"}}> Remember to click on one of the three button before searching (otherwise it would default to "Random" after each search). </p>
 
-      <div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <TextField
           id="search-bar"
           className="text"
@@ -33,7 +42,7 @@ function App() {
           onChange={(e: any) => {
             setInput(e.target.value);
           }}
-          label="Enter..."
+          label="Enter Text"
           variant="outlined"
           placeholder="Search..."
           size="small"
@@ -45,25 +54,49 @@ function App() {
           >
             <SearchIcon style={{ fill: "blue" }} />
             GO
-          </Button>
+        </Button>
+      
       </div>
 
+      <div style={{maxWidth: "1800px"}}>
       {inputInfo === undefined ? (
-        <p> Error </p>
+        <Grid
+          container
+          direction="row"
+          spacing={5}
+          sx={{
+            margin: "10px",
+            justifyContent: "center",
+            textAlign: 'center',
+          }}
+        >
+        <p> Error. If you are in "Anime Title" or "Character Name". Either the textbox is empty or text is invalid. </p>
+        </Grid>
       ) : (
-        <div>
+        <Grid
+          container
+          direction="row"
+          spacing={5}
+          sx={{
+            margin: "20px",
+            textAlign: 'center',
+            justifyContent: "center",
+            backgroundColor: "#AAAAAA"
+          }}
+        >
           <p> 
-            {inputInfo.anime}  <br/>
+            <strong> {inputInfo.anime} </strong>  <br/>
             {inputInfo.character} <br/>
-            "{inputInfo.quote}"
+            <i>"{inputInfo.quote}"</i>
             {inputInfo.anime === "Re:Zero kara Hajimeru Isekai Seikatsu" ? (
               <p> RE:ZERO! </p>
             ) : (
               <p></p>
             )}
           </p>
-        </div>
+        </Grid>
       )}
+      </div>
     </div>
   );
 
@@ -84,18 +117,21 @@ function App() {
       fetch("https://animechan.vercel.app/api/random")
         .then(res => res.json())
         .then(quote => setInputInfo(quote))
-      console.log("Random")
+        //.then(quote => console.log(quote))
+      //console.log("Random")
 
     } else if (searchMode === "Anime Title") {
       fetch("https://animechan.vercel.app/api/quotes/anime?title=" + input)
         .then(res => res.json())
         .then(quotes => setInputInfo(quotes[Math.floor(Math.random() * quotes.length)]))
-      console.log("animeTitle")
+        //.then(quotes => console.log(quotes))
+      //console.log("animeTitle")
     } else if (searchMode === "Character Name") {
       fetch("https://animechan.vercel.app/api/quotes/character?name=" + input)
         .then(res => res.json())
         .then(quotes => setInputInfo(quotes[Math.floor(Math.random() * quotes.length)]))
-      console.log("characterName")
+        //.then(quotes => console.log(quotes))
+      //console.log("characterName")
     }
 }
 }
