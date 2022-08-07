@@ -11,3 +11,5 @@ Read the ```README.md``` file within the folder to open the API.
 ## Data Science Module
 
 My assignment for the Data-Science Module is in the ```Data-Science``` Folder. The assignment is to use data from a file ```weather-data.csv``` to perform EDA on the data and then model the data to predict the data a month after the data's latest date. My note, code and obervations are in the ```Data-Science-Project.ipynb``` file.
+
+However, the modelling was not successful due to unable of getting an accurate, viable model. But I did complete the Exploration Data Analysis and Data Processing.
